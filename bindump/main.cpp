@@ -224,10 +224,12 @@ void handleStructDef(FILE* fh, std::map<Token, std::vector<Token>>& structTable)
 	Token structId = readToken(fh);
 	uint8_t structLen = readByte(fh);
 	std::vector<Token> structDef;
+
 	for (int i = 0; i < structLen; ++i)
 	{
 		structDef.push_back(readToken(fh));
 	}
+
 	structTable[structId] = structDef;
 }
 
@@ -272,6 +274,9 @@ void recursivePrint(FILE* fh, Token token, std::map<Token, std::vector<Token>>& 
 	if (g_game == eGame::LegoRacers || g_game == eGame::Paperboy)
 	{
 		if (token == 0x0b) return handleQ_4_4(fh, indent, sqBracketStack, sqBracketCount);
+
+		// this seems to get used for array counts in Paperboy
+		// so I'm not certain that it's Q8.8 universally
 		if (token == 0x0d) return handleQ_8_8(fh, indent, sqBracketStack, sqBracketCount);
 	}
 
@@ -401,8 +406,8 @@ int main(int argc, char** argv)
 			printf("\n");
 		}
 
-		eprintf("%s\n", filepath);
-		//printf("%s\n", filepath);
+		//eprintf("%s\n", filepath);
+		printf("%s\n", filepath);
 
 		FILE* fh = fopen(filepath, "rb");
 		if (!fh)
