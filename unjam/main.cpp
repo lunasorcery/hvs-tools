@@ -90,8 +90,9 @@ void recurse(std::string const& path, FILE* fh, eVersion version)
 void unjam(std::string const& path)
 {
 	FILE* fh = fopen(path.c_str(), "rb");
-	if(!fh)
+	if (!fh)
 	{
+		eprintf("Failed to open %s\n", path.c_str());
 		exit(1);
 	}
 
@@ -110,7 +111,8 @@ void unjam(std::string const& path)
 	}
 	else
 	{
-		exit(2);
+		eprintf("Bad magic number in %s\n", path.c_str());
+		exit(1);
 	}
 
 	std::string targetPath = path + ".dump";
